@@ -93,3 +93,24 @@ func FormattedTimeRecord() ([]byte, uint32) {
 	copy(ts[:], timestamp[0:32])
 	return ts[:], uint32(32)
 }
+func GetUnixNanoDiff(before, after []byte) time.Duration {
+	bf := time.Unix(0, int64(binary.LittleEndian.Uint64(before)))
+	af := time.Unix(0, int64(binary.LittleEndian.Uint64(after)))
+
+	return af.Sub(bf)
+}
+
+func NowUnixNanoLittleEndian() []byte {
+	var buf = make([]byte, 8)
+	binary.LittleEndian.PutUint64(buf, uint64(time.Now().UnixNano()))
+	fmt.Println(buf)
+	return buf
+}
+
+func GenAIDSIDLittleEndian(Aid, Sid uint32) []byte {
+	bufA := make([]byte, 4)
+	bufS := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bufA, Aid)
+	binary.LittleEndian.PutUint32(bufS, Sid)
+	return append(bufA, bufS...)
+}
