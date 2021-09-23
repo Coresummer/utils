@@ -1,9 +1,12 @@
 package utils
 
 import (
+	"bytes"
 	"crypto/rand"
 	"encoding/binary"
+	"encoding/gob"
 	"fmt"
+	"strconv"
 	"time"
 
 	term "github.com/nsf/termbox-go"
@@ -135,4 +138,76 @@ func GenAIDSIDLittleEndian(Aid, Sid uint32) []byte {
 	binary.LittleEndian.PutUint32(bufA, Aid)
 	binary.LittleEndian.PutUint32(bufS, Sid)
 	return append(bufA, bufS...)
+}
+
+func GetUint32FromString2Map(field string, m map[string]string) uint32 { //PuiPuiMapCmd
+	tmp, err := strconv.ParseUint(m[field], 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return uint32(tmp)
+}
+
+func GobEncordeOutString(v interface{}) string {
+	buf := new(bytes.Buffer)
+	err := gob.NewEncoder(buf).Encode(&v)
+	if err != nil {
+		panic(err)
+	}
+	return fmt.Sprint(buf)
+}
+
+func GobDecoderUint32Array(val string) []uint32 {
+	var resv interface{}
+	// var res []uint32
+	buf := bytes.NewBuffer(nil)
+	buf.WriteString(val)
+	err := gob.NewDecoder(buf).Decode(&resv)
+	if err != nil {
+		panic(err)
+	}
+	buf.Reset()
+	return resv.([]uint32)
+}
+
+func GobDecoderBoolArray(val string) []bool {
+	var res []bool
+	buf := bytes.NewBuffer(nil)
+	buf.WriteString(val)
+	err := gob.NewDecoder(buf).Decode(&res)
+	if err != nil {
+		panic(err)
+	}
+	buf.Reset()
+	return res
+}
+
+func GobDecoderByteByteArray(val string) [][]byte {
+	var res [][]byte
+	buf := bytes.NewBuffer(nil)
+	buf.WriteString(val)
+	err := gob.NewDecoder(buf).Decode(&res)
+	if err != nil {
+		panic(err)
+	}
+	buf.Reset()
+	return res
+}
+
+func GobDecoderStringArray(val string) []string {
+	var res []string
+	buf := bytes.NewBuffer(nil)
+	buf.WriteString(val)
+	err := gob.NewDecoder(buf).Decode(&res)
+	if err != nil {
+		panic(err)
+	}
+	buf.Reset()
+	return res
+}
+
+func StringConvertToBool(val string) bool {
+
+	return val == "true"
+
 }
