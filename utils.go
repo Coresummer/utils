@@ -178,6 +178,19 @@ func GobDecoderUint32Array(val string) []uint32 {
 	return resv.([]uint32)
 }
 
+func GobDecoderUint64Array(val string) []uint64 {
+	var resv interface{}
+	// var res []uint32
+	buf := bytes.NewBuffer(nil)
+	buf.WriteString(val)
+	err := gob.NewDecoder(buf).Decode(&resv)
+	if err != nil {
+		panic(err)
+	}
+	buf.Reset()
+	return resv.([]uint64)
+}
+
 func GobDecoderBoolArray(val string) []bool {
 	var res []bool
 	buf := bytes.NewBuffer(nil)
