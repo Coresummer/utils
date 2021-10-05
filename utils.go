@@ -148,6 +148,14 @@ func GetUint32FromString2Map(field string, m map[string]string) uint32 { //PuiPu
 	return uint32(tmp)
 }
 
+func GetUint64FromString2Map(field string, m map[string]string) uint64 { //PuiPuiMapCmd
+	tmp, err := strconv.ParseUint(m[field], 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	return uint64(tmp)
+}
+
 func GobEncoderOutString(v interface{}) string {
 	buf := new(bytes.Buffer)
 	err := gob.NewEncoder(buf).Encode(&v)
