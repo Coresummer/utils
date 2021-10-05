@@ -148,7 +148,7 @@ func GetUint32FromString2Map(field string, m map[string]string) uint32 { //PuiPu
 	return uint32(tmp)
 }
 
-func GobEncordeOutString(v interface{}) string {
+func GobEncoderOutString(v interface{}) string {
 	buf := new(bytes.Buffer)
 	err := gob.NewEncoder(buf).Encode(&v)
 	if err != nil {
