@@ -140,6 +140,14 @@ func GenAIDSIDLittleEndian(Aid, Sid uint32) []byte {
 	return append(bufA, bufS...)
 }
 
+func GetUint8FromString2Map(field string, m map[string]string) uint8 { //PuiPuiMapCmd
+	tmp, err := strconv.ParseUint(m[field], 10, 8)
+	if err != nil {
+		panic(err)
+	}
+	return uint8(tmp)
+}
+
 func GetUint32FromString2Map(field string, m map[string]string) uint32 { //PuiPuiMapCmd
 	tmp, err := strconv.ParseUint(m[field], 10, 32)
 	if err != nil {
