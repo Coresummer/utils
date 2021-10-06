@@ -3,6 +3,7 @@ package utils
 import (
 	"bytes"
 	"crypto/rand"
+
 	"encoding/binary"
 	"encoding/gob"
 	"fmt"
@@ -188,7 +189,6 @@ func GobDecoderUint32Array(val string) []uint32 {
 
 func GobDecoderUint64Array(val string) []uint64 {
 	var resv interface{}
-	// var res []uint32
 	buf := bytes.NewBuffer(nil)
 	buf.WriteString(val)
 	err := gob.NewDecoder(buf).Decode(&resv)
@@ -239,4 +239,40 @@ func StringConvertToBool(val string) bool {
 
 	return val == "true"
 
+}
+
+func ByteArrayConvertToUint(val []byte) (res int) {
+
+	switch leng := len(val); {
+	case leng <= 0:
+		fmt.Println("In ByteArrayConvertToUint, Error: Input length <= 0")
+		res = 0
+
+	case leng <= 2:
+		if leng < 2 {
+			val = append(val, []byte{0}...)
+		}
+		res = int(binary.LittleEndian.Uint16(val))
+
+	case leng <= 4:
+		if leng < 4 {
+			for i := 0; i < 4-leng; i++ {
+				val = append(val, []byte{0}...)
+			}
+		}
+		res = int(binary.LittleEndian.Uint32(val))
+
+	case leng <= 8:
+		if leng < 8 {
+			for i := 0; i < 8-leng; i++ {
+				val = append(val, []byte{0}...)
+			}
+		}
+		res = int(binary.LittleEndian.Uint64(val))
+
+	default:
+		fmt.Println("In ByteArrayConvertToUint, Error: Input length > 8\ndonno what to do.")
+		res = 0
+	}
+	return res
 }
