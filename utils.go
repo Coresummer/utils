@@ -129,7 +129,6 @@ func GetUnixNanoDiff(before, after []byte) time.Duration {
 func NowUnixNanoLittleEndian() []byte {
 	var buf = make([]byte, 8)
 	binary.LittleEndian.PutUint64(buf, uint64(time.Now().UnixNano()))
-	fmt.Println(buf)
 	return buf
 }
 
